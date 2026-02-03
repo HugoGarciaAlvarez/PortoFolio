@@ -1,5 +1,31 @@
 const GITHUB_USER = 'HugoGarciaAlvarez';
 
+// MENÚ HAMBURGUESA
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+
+navToggle.addEventListener('click', () => {
+    const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', !isOpen);
+    navMenu.classList.toggle('active');
+});
+
+// Cerrar menú al hacer click en un enlace
+navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navToggle.setAttribute('aria-expanded', 'false');
+        navMenu.classList.remove('active');
+    });
+});
+
+// Cerrar menú al hacer click fuera
+document.addEventListener('click', (e) => {
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navToggle.setAttribute('aria-expanded', 'false');
+        navMenu.classList.remove('active');
+    }
+});
+
 // EFECTO MÁQUINA DE ESCRIBIR
 const words = ['Desarrollador', 'Diseñador', 'Creativo', 'Programador'];
 let wordIndex = 0, charIndex = 0, isDeleting = false;
@@ -169,36 +195,4 @@ window.addEventListener('DOMContentLoaded', () => {
     );
 
     revealElements.forEach(el => observer.observe(el));
-
-    // MENU HAMBURGUESA
-    const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (navToggle && navMenu) {
-        // Toggle del menú
-        navToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
-            navToggle.setAttribute('aria-expanded', String(!isOpen));
-            navMenu.classList.toggle('active');
-        });
-
-        // Cerrar menú al hacer click en un enlace
-        const menuLinks = navMenu.querySelectorAll('a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.setAttribute('aria-expanded', 'false');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        // Cerrar menú al hacer click fuera
-        document.addEventListener('click', (e) => {
-            const isClickInside = navToggle.contains(e.target) || navMenu.contains(e.target);
-            if (!isClickInside && navMenu.classList.contains('active')) {
-                navToggle.setAttribute('aria-expanded', 'false');
-                navMenu.classList.remove('active');
-            }
-        });
-    }
 });
